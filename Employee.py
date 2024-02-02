@@ -2,15 +2,15 @@ class Employee:
     vacation_days = 28  # общий атрибут для всех типа умолчания
 
     # атрибуты, которые определяются во время создания объекта
-    def __init__(self, first_name_value,
-                 second_name_value, gender_value) -> None:
-        self.first_name = first_name_value
-        self.second_name = second_name_value
-        self.gender = gender_value
-        self.remaining_vacation_days = Employee.vacation_days
-        self._employee_id = self.__generate_employee_id()
+    def __init__(self, first_name,
+                 second_name, gender) -> None:
+        self.first_name = first_name
+        self.second_name = second_name
+        self.gender = gender
         #   очень важно EMPLOYEE.vacation_days то есть
         #   мы обращаемся к атрибуту КЛАССА
+        self.remaining_vacation_days = Employee.vacation_days
+        self._employee_id = self.__generate_employee_id()
 
     def __generate_employee_id(self):
         return hash(self.first_name + self.second_name + self.gender)
@@ -24,15 +24,14 @@ class Employee:
 
 class FullTimeEmployee(Employee):
 
+    def __init__(self, first_name, second_name, gender, salary) -> None:
+        super().__init__(first_name, second_name, gender)
+        self.__salary = salary
+
     def get_unpaid_vacation(self, start_date, vacation_days):
         return (f'Начало неоплачиваемого отпуска: '
                 f'{start_date}, '
                 f'продолжительность: {vacation_days} дней.')
-
-    def __init__(self, first_name_value,
-                 second_name_value, gender_value, salary_value) -> None:
-        self.__salary = salary_value
-        super().__init__(first_name_value, second_name_value, gender_value)
 
     def __get_vacation_salary(self):
         return self.__salary * 0.8
@@ -44,9 +43,9 @@ class FullTimeEmployee(Employee):
 class PartTimeEmployee(Employee):
     vacation_days = 14
 
-    def __init__(self, first_name_value, second_name_value,
-                 gender_value) -> None:
-        super().__init__(first_name_value, second_name_value, gender_value)
+    def __init__(self, first_name, second_name,
+                 gender) -> None:
+        super().__init__(first_name, second_name, gender)
         self.remaining_vacation_days = PartTimeEmployee.vacation_days
 
 
